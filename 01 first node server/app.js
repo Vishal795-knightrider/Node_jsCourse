@@ -1,4 +1,4 @@
-const http=require('http');  //http module ko import kr liya ha ab iske fn ko use  krenge
+const http=require('http');  //"Node.js, give me the HTTP module so that I can use its functions."
 
 const server=http.createServer((req,res)=>{  //yeh request ayegi server ke pass
   console.log(req);    //yeh create server fn 1 object reurn krta hai aur us object ko humne sunna  hai
