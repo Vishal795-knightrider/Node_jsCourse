@@ -14,7 +14,7 @@ const server=http.createServer((req,res)=>{
     return res.end();
   }
   res.write('<h1>Done</h1>');
-  return res.end();
+  res.end();
 });
 
 server.listen(3000,()=>{ 
