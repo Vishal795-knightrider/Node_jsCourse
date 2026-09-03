@@ -2,7 +2,6 @@ const http = require('http');
 const fs = require('fs');
 
 const server = http.createServer((req, res) => {
-  console.log(req.url, req.method, req.headers);
 
   if (req.url === '/') {
     res.setHeader('Content-Type', 'text/html');
@@ -23,6 +22,11 @@ const server = http.createServer((req, res) => {
 
   } else if (req.url.toLowerCase() === "/submit-details" &&
         req.method == "POST") {
+
+          req.on("data",chunk=>{
+            console.log(chunk);     //jb bhi apke pas ui se post request aye submit details wale url pr aye 
+          });                       //yaha listneer hmne rakh diya hai snf jsbhi naya data hm
+
     fs.writeFileSync('user.txt', 'Prashant Jain');
     res.statusCode = 302;      //ridirection
     res.setHeader('Location', '/');

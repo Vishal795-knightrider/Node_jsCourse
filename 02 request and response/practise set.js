@@ -10,7 +10,7 @@
 const http = require('http');
 
 const server = http.createServer((req, res) => {
-  console.log(req.url, req.method);
+  // console.log(req.url, req.method);
   if (req.url === '/home') {
     res.write('<h1>Welcome to Home</h1>');
     return res.end();
