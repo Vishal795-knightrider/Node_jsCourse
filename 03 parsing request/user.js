@@ -27,8 +27,19 @@ const server = http.createServer((req, res) => {
             console.log(chunk);     //jb bhi apke pas ui se post request aye submit details wale url pr aye 
           });                       //yaha listneer hmne rakh diya hai snf jsbhi naya data hm
 
+          const body=[];
+          req.on('data',chunk=>{
+            console.log(chunk);
+            body.push(chunk);
+          });
+
+          req.on("end",()=>{    //chunk ane ab bnd ho gye puri request kb agyi
+            const fullBody=Buffer.concat(body).toString();
+            console.log(fullBody);
+          })
+
     fs.writeFileSync('user.txt', 'Prashant Jain');
-    res.statusCode = 302;      //ridirection
+    res.statusCode = 302;      //ridirecti on
     res.setHeader('Location', '/');
   }
   res.setHeader('Content-Type', 'text/html');
