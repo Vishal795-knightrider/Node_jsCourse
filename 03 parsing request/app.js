@@ -1,5 +1,5 @@
 const http = require('http');
-const requestHandler = require('./user');
+const requestHandler = require('./user');  //user file ko import kiya is file se userreuest handler milega
 
 const server = http.createServer(requestHandler);
 
