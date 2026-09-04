@@ -1,7 +1,7 @@
-const http = require('http');
 const fs = require('fs');
 
-const server = http.createServer((req, res) => {
+const userRequestHandler = (req, res) => {
+  // console.log(req.url, req.method);
 
   if (req.url === '/') {
     res.setHeader('Content-Type', 'text/html');
@@ -22,24 +22,26 @@ const server = http.createServer((req, res) => {
 
   } else if (req.url.toLowerCase() === "/submit-details" &&
         req.method == "POST") {
+    
+    const body = [];      
+    req.on('data', chunk => {
+      console.log(chunk);               
+      body.push(chunk);    //stream of chunk ko 1 jagah la rahe hai that is body me
+    });
+    req.on('end', () => {         // jab chunks ana khtm ho gye
+      const fullBody = Buffer.concat(body).toString();      //boddy ko buffer me dal diya string me krke
+      console.log(fullBody);
+      const params = new URLSearchParams(fullBody);                //usme se paramter extract kr liye like username , gender ..
+      // const bodyObject = {};
+      // for (const [key, val] of params.entries()) {
+      //   bodyObject[key] = val;
+      // }
+      const bodyObject = Object.fromEntries(params);       //objetc  me le liya 
+      console.log(bodyObject);
+      fs.writeFileSync('user.txt', JSON.stringify(bodyObject));      //uske baad dynamicslly file me write kr diya json ko string me convetr krke
+    });
 
-          req.on("data",chunk=>{
-            console.log(chunk);     //jb bhi apke pas ui se post request aye submit details wale url pr aye 
-          });                       //yaha listneer hmne rakh diya hai snf jsbhi naya data hm
-
-          const body=[];
-          req.on('data',chunk=>{
-            console.log(chunk);
-            body.push(chunk);
-          });
-
-          req.on("end",()=>{    //chunk ane ab bnd ho gye puri request kb agyi
-            const fullBody=Buffer.concat(body).toString();
-            console.log(fullBody);
-          })
-
-    fs.writeFileSync('user.txt', 'Prashant Jain');
-    res.statusCode = 302;      //ridirecti on
+    res.statusCode = 302;
     res.setHeader('Location', '/');
   }
   res.setHeader('Content-Type', 'text/html');
@@ -48,9 +50,6 @@ const server = http.createServer((req, res) => {
   res.write('<body><h1>Like / Share / Subscribe</h1></body>');
   res.write('</html>');
   res.end();
-});
+};
 
-const PORT = 3001;
-server.listen(PORT, () => {
-  console.log(`Server running on address http://localhost:${PORT}`);
-});
+module.exports = userRequestHandler;     //mere module se request requesthandler export kr dijiye
