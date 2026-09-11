@@ -1,7 +1,7 @@
 // External Module
 const express = require('express');
 
-const app = express();
+const app = express();  //This creates an Express application/server object and stores it in app.
 
 app.get("/", (req, res, next) => {
   console.log("Came in first middleware", req.url, req.method);
